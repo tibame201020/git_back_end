@@ -93,19 +93,19 @@ public class TwseStockApiImpl implements TwseStockApi {
         String thisMonth = DateUtil.getThisMonth();
         for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1)) {
             String yearMonthCode = date.format(DateTimeFormatter.ofPattern("yyyy/MM")) + code;
-            
-            if (yearMonthCode.equals(thisMonth + code)) {
-                String dateFormat = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-                StockBasicInfo stockBasicInfo = getInfoUrl(dateFormat, code);
-                List<StockData> stockDataList = translateJsonData(stockBasicInfo.getData(), code);
-                long apiDateSize = stockDataList.size();
-                long dbCount = stockDataRepo.countByYearMonthCode(yearMonthCode);
-                if (apiDateSize != dbCount) {
-                    stockDataRepo.saveAll(stockDataList);
-                }
-            }
-
             if (!beforeYearMonthCode.equals(yearMonthCode)) {
+
+                if (yearMonthCode.equals(thisMonth + code)) {
+                    String dateFormat = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    StockBasicInfo stockBasicInfo = getInfoUrl(dateFormat, code);
+                    List<StockData> stockDataList = translateJsonData(stockBasicInfo.getData(), code);
+                    long apiDateSize = stockDataList.size();
+                    long dbCount = stockDataRepo.countByYearMonthCode(yearMonthCode);
+                    if (apiDateSize != dbCount) {
+                        stockDataRepo.saveAll(stockDataList);
+                    }
+                }
+                
                 List<StockData> stockDataListByMonth = stockDataRepo.findByYearMonthCode(yearMonthCode);
                 if (null == stockDataListByMonth || stockDataListByMonth.size() == 0) {
                     saveDataFromUrl(date, code);
