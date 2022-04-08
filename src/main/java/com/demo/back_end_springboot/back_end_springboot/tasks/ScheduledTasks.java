@@ -21,7 +21,7 @@ public class ScheduledTasks {
     @Scheduled(fixedRate = 1000*60*60*24)
     public void getPriceFromOpenTwseApi() {
         StockJson[] stockJsons = REST_TEMPLATE.getForObject(STOCK_DAY_ALL_URL, StockJson[].class);
-        stockJsonRepo.saveAll(Arrays.asList(stockJsons));
+        // stockJsonRepo.saveAll(Arrays.asList(stockJsons));
         ScheduledTasks.stockJsons = stockJsons;
     }
 

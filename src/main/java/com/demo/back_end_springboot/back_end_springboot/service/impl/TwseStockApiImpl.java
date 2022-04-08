@@ -44,8 +44,7 @@ public class TwseStockApiImpl implements TwseStockApi {
 
     @Autowired
     private StockDataRepo stockDataRepo;
-    @Autowired
-    private StockJsonRepo stockJsonRepo;
+
 
     @Override
     public StockJson[] getCodeNmList(String key) {
@@ -141,11 +140,12 @@ public class TwseStockApiImpl implements TwseStockApi {
             key = key.split("-")[0].trim();
         }
 
-        if (stockJsonRepo.findById(key).isPresent()) {
-            return true;
-        } else {
-            return false;
+        for (StockJson stockJson : ScheduledTasks.getStockJsons()) {
+            if (stockJson.getCode().equals(key)) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
@@ -155,12 +155,7 @@ public class TwseStockApiImpl implements TwseStockApi {
 
     @Override
     public String getPriceByCode(String code) {
-        try {
-            return stockJsonRepo.findById(code).get().getClosingprice();
-        } catch (Exception e) {
-            return "no price find";
-        }
-
+        return Arrays.stream(ScheduledTasks.getStockJsons()).filter(stockJson -> stockJson.getCode().equals(splitCode(code))).findFirst().get().getClosingprice();
     }
 
     private String splitCode (String code) {
