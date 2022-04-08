@@ -27,6 +27,8 @@ public class MailServiceImpl implements MailService {
     private OnceTokenRepo onceTokenRepo;
     @Autowired
     private UserRepo userRepo;
+    
+    private final String FRONT_BASE_URL = "https://tibame201020.github.io/front_end_angular/";
 
     @Override
     public User sendValidMail(User user) {
@@ -38,7 +40,7 @@ public class MailServiceImpl implements MailService {
 
         preStr = preStr + "plz click the under url to enable ur account" + "\n";
 
-        String base_enable_url = "http://localhost:4200/valid?validToken=";
+        String base_enable_url = FRONT_BASE_URL + "valid?validToken=";
         message.setText(preStr + base_enable_url + valid_token);
         sendMail(message);
         return user;
@@ -51,7 +53,7 @@ public class MailServiceImpl implements MailService {
         message.setSubject("Reset Ur Password");
         String preStr = "Dear " + user.getAccount() + " :" + "\n";
         preStr = preStr + "plz click the under url to reset ur pwd, but it's only have ten min to reset" + "\n";
-        String base_enable_url = "http://localhost:4200/user/reset_pwd?resetToken=";
+        String base_enable_url = FRONT_BASE_URL + "user/reset_pwd?resetToken=";
         message.setText(preStr + base_enable_url + reset_token);
         sendMail(message);
         onceTokenRepo.save(new OnceToken(user.getMail(), reset_token));
