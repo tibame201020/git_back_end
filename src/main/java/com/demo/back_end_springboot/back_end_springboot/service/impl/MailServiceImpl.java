@@ -85,7 +85,7 @@ public class MailServiceImpl implements MailService {
     private SimpleMailMessage getSimpleMailMessage(User user) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getMail());
-        message.setFrom("demoservice0407@hotmail.com");
+        message.setFrom("backservice0408@gmail.com");
         return message;
     }
 
