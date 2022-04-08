@@ -88,11 +88,15 @@ public class TwseStockApiImpl implements TwseStockApi {
         LocalDate start = LocalDate.parse(codeParam.getStartDate(), formatter);
         LocalDate end = LocalDate.parse(codeParam.getEndDate(), formatter).plusDays(1);
         String code = codeParam.getCode();
-        for (LocalDate date = start; date.isBefore(end); date = date.plusMonths(1)) {
+        String berforeYearMonthCode = "";
+        for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1)) {
             String yearMonthCode = date.format(DateTimeFormatter.ofPattern("yyyy/MM")) + code;
-            List<StockData> stockDataListByMonth = stockDataRepo.findByYearMonthCode(yearMonthCode);
-            if (null == stockDataListByMonth || stockDataListByMonth.size() == 0) {
-                saveDataFromUrl(date, code);
+            if (!berforeYearMonthCode.equals(yearMonthCode)) {
+                List<StockData> stockDataListByMonth = stockDataRepo.findByYearMonthCode(yearMonthCode);
+                if (null == stockDataListByMonth || stockDataListByMonth.size() == 0) {
+                    saveDataFromUrl(date, code);
+                }
+                berforeYearMonthCode = yearMonthCode;
             }
         }
         return stockDataRepo.findByCodeOutAndYearMonthDateBetweenOrderByYearMonthDate(code, codeParam.getStartDate(), codeParam.getEndDate());
