@@ -12,6 +12,7 @@ import com.demo.back_end_springboot.back_end_springboot.repo.StockDataRepo;
 import com.demo.back_end_springboot.back_end_springboot.repo.StockJsonRepo;
 import com.demo.back_end_springboot.back_end_springboot.service.TwseStockApi;
 import com.demo.back_end_springboot.back_end_springboot.tasks.ScheduledTasks;
+import com.demo.back_end_springboot.back_end_springboot.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -88,15 +89,28 @@ public class TwseStockApiImpl implements TwseStockApi {
         LocalDate start = LocalDate.parse(codeParam.getStartDate(), formatter);
         LocalDate end = LocalDate.parse(codeParam.getEndDate(), formatter).plusDays(1);
         String code = codeParam.getCode();
-        String berforeYearMonthCode = "";
+        String beforeYearMonthCode = "";
+        String thisMonth = DateUtil.getThisMonth();
         for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1)) {
             String yearMonthCode = date.format(DateTimeFormatter.ofPattern("yyyy/MM")) + code;
-            if (!berforeYearMonthCode.equals(yearMonthCode)) {
+            
+            if (yearMonthCode.equals(thisMonth + code)) {
+                String dateFormat = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                StockBasicInfo stockBasicInfo = getInfoUrl(dateFormat, code);
+                List<StockData> stockDataList = translateJsonData(stockBasicInfo.getData(), code);
+                long apiDateSize = stockDataList.size();
+                long dbCount = stockDataRepo.countByYearMonthCode(yearMonthCode);
+                if (apiDateSize != dbCount) {
+                    stockDataRepo.saveAll(stockDataList);
+                }
+            }
+
+            if (!beforeYearMonthCode.equals(yearMonthCode)) {
                 List<StockData> stockDataListByMonth = stockDataRepo.findByYearMonthCode(yearMonthCode);
                 if (null == stockDataListByMonth || stockDataListByMonth.size() == 0) {
                     saveDataFromUrl(date, code);
                 }
-                berforeYearMonthCode = yearMonthCode;
+                beforeYearMonthCode = yearMonthCode;
             }
         }
         return stockDataRepo.findByCodeOutAndYearMonthDateBetweenOrderByYearMonthDate(code, codeParam.getStartDate(), codeParam.getEndDate());

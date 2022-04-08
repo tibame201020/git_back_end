@@ -10,4 +10,10 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         return localDate.format(formatter);
     }
+
+    public static String getThisMonth () {
+        LocalDate localDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM");
+        return localDate.format(formatter);
+    }
 }
