@@ -344,6 +344,8 @@ public class PracticeServiceImpl implements PracticeService {
             } else {
                 String yearMonth = date.substring(0, date.length() - 3);
                 Integer findDate = new Integer(date.replace("/", ""));
+                System.out.println("yearMonth = " + yearMonth);
+                System.out.println("findDate = " + findDate);
                 for (StockVolume stockVolume : stockVolumes) {
                     String yearMonthCode = yearMonth + stockVolume.getCode();
                     List<StockData> stockDataList = stockDataRepo.findByYearMonthCodeOrderByYearMonthDateDesc(yearMonthCode);
