@@ -249,7 +249,7 @@ public class PracticeServiceImpl implements PracticeService {
 
     @Override
     public List<Record> getTopList() {
-        List<String> visibilityIsAllAccounts = getVisibilityIsAllAccount();
+        Set<String> visibilityIsAllAccounts = getVisibilityIsAllAccount();
         List<Record> records = getRecordsByAccounts(visibilityIsAllAccounts);
         calcTotalPiceIsToday(records);
         records.sort(((o1, o2) -> {
@@ -279,7 +279,7 @@ public class PracticeServiceImpl implements PracticeService {
         return records;
     }
 
-    private List<Record> getRecordsByAccounts(List<String> visibilityIsAllAccounts) {
+    private List<Record> getRecordsByAccounts(Set<String> visibilityIsAllAccounts) {
         List<Record> records = new ArrayList<>();
         visibilityIsAllAccounts.forEach(str -> {
             List<Record> recordLs = recordRepo.findByAccountOutlineOrderByRecordPk(str);
@@ -289,10 +289,10 @@ public class PracticeServiceImpl implements PracticeService {
         return records;
     }
 
-    private List<String> getVisibilityIsAllAccount() {
+    private Set<String> getVisibilityIsAllAccount() {
         return recordRepo.findAll().stream().filter(record -> {
             return record.getVisibility().equals("all");
-        }).map(Record::getAccountOutline).collect(Collectors.toList());
+        }).map(Record::getAccountOutline).collect(Collectors.toSet());
     }
 
     private StockVolume[] plusStockVolume(StockVolume[] stockVolumes, PracticeForm practiceForm) {
