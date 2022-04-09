@@ -87,17 +87,18 @@ public class PracticeServiceImpl implements PracticeService {
         StockVolume[] stockVolumes = record.getStockVolumes();
         stockVolumes = plusStockVolume(stockVolumes, practiceForm);
         record.setStockVolumes(stockVolumes);
-
-        record.getRecordPk().setDate(DateUtil.getToday());
+        Record recordtoSave = getSaveRecord(record);
 
         Map<String, BigDecimal> assets = calcTotalAssets(record.getRecordPk().getAccount(), record.getRecordPk().getDate());
         BigDecimal volume = new BigDecimal(practiceForm.getVolume());
         BigDecimal remainCash = assets.get("remainCash");
         saveStockRecord(practiceForm, volume, beforeCash, remainCash);
 
-        recordRepo.save(record);
+
+
+        recordRepo.save(recordtoSave);
         rtnMap.put("status", true);
-        rtnMap.put("result", record);
+        rtnMap.put("result", recordtoSave);
         rtnMap.put("assest", assets);
 
         return rtnMap;
@@ -115,8 +116,9 @@ public class PracticeServiceImpl implements PracticeService {
         stockRecord.setUnitPrice(unitPrice);
         stockRecord.setBeforeCash(beforeCash);
         stockRecord.setRemainCash(remainCash);
+        stockRecord.setId(null);
 
-        stockRecordRepo.save(stockRecord);
+       stockRecordRepo.save(stockRecord);
     }
 
     private boolean checkRemainCashCanAfford(Record record, PracticeForm practiceForm) {
@@ -160,13 +162,14 @@ public class PracticeServiceImpl implements PracticeService {
                         BigDecimal remainCash = record.getCash();
                         record.setCash(remainCash.add(price.multiply(volume)));
 
-                        record.getRecordPk().setDate(DateUtil.getToday());
-                        recordRepo.save(record);
+                        Record recordtoSave = getSaveRecord(record);
+
+                        recordRepo.save(recordtoSave);
                         Map<String, BigDecimal> assets = calcTotalAssets(record.getRecordPk().getAccount(), record.getRecordPk().getDate());
                         saveStockRecord(practiceForm, volume.negate(), beforeCash, record.getCash());
 
                         rtnMap.put("status", true);
-                        rtnMap.put("result", record);
+                        rtnMap.put("result", recordtoSave);
                         rtnMap.put("assest", assets);
                         return rtnMap;
                     } else {
@@ -184,6 +187,21 @@ public class PracticeServiceImpl implements PracticeService {
         rtnMap.put("status", false);
         rtnMap.put("result", "u don't have enough stock volume to sell");
         return rtnMap;
+    }
+
+    private Record getSaveRecord(Record record) {
+        RecordPk recordPk = new RecordPk();
+        recordPk.setAccount(record.getRecordPk().getAccount());
+        recordPk.setDate(DateUtil.getToday());
+        Record rtnRecord = new Record();
+        rtnRecord.setRecordPk(recordPk);
+
+        rtnRecord.setCash(record.getCash());
+        rtnRecord.setVisibility(record.getVisibility());
+        rtnRecord.setStockVolumes(record.getStockVolumes());
+        rtnRecord.setTotal(record.getTotal());
+        rtnRecord.setAccountOutline(record.getAccountOutline());
+        return rtnRecord;
     }
 
     @Override
