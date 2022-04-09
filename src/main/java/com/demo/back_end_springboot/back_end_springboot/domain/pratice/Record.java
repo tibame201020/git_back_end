@@ -3,11 +3,7 @@ package com.demo.back_end_springboot.back_end_springboot.domain.pratice;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -20,7 +16,7 @@ public class Record implements Serializable {
     private BigDecimal cash;
     @Lob
     private StockVolume[] stockVolumes;
-    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",insertable = false,updatable = false)
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", insertable = false, updatable = false)
     @Generated(GenerationTime.ALWAYS)
     private Timestamp recordTime;
 

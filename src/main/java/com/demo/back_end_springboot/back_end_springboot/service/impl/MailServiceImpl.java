@@ -27,14 +27,14 @@ public class MailServiceImpl implements MailService {
     private OnceTokenRepo onceTokenRepo;
     @Autowired
     private UserRepo userRepo;
-    
+
     private final String FRONT_BASE_URL = "https://tibame201020.github.io/front_end_angular/";
 
     @Override
     public User sendValidMail(User user) {
         SimpleMailMessage message = getSimpleMailMessage(user);
         message.setSubject("HI " + user.getAccount() + " Thanks Register Start Ur Journey");
-        String valid_token = jwtProvider.getToken(new Auth(user), 7*24*60*60*1000, "");
+        String valid_token = jwtProvider.getToken(new Auth(user), 7 * 24 * 60 * 60 * 1000, "");
         //this is need to generate a link to valid user
         String preStr = "Dear " + user.getAccount() + " :" + "\n";
 
@@ -49,7 +49,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public User sendResetPwdMail(User user) {
         SimpleMailMessage message = getSimpleMailMessage(user);
-        String reset_token = jwtProvider.getToken(new Auth(user), 10*60*1000, user.getMail());
+        String reset_token = jwtProvider.getToken(new Auth(user), 10 * 60 * 1000, user.getMail());
         message.setSubject("Reset Ur Password");
         String preStr = "Dear " + user.getAccount() + " :" + "\n";
         preStr = preStr + "plz click the under url to reset ur pwd, but it's only have ten min to reset" + "\n";
@@ -67,7 +67,7 @@ public class MailServiceImpl implements MailService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             SimpleMailMessage message = getSimpleMailMessage(user);
-            String login_token = jwtProvider.getToken(new Auth(user), 10*60*1000, "");
+            String login_token = jwtProvider.getToken(new Auth(user), 10 * 60 * 1000, "");
             message.setSubject("This is for ur once login code");
             String preStr = "Dear " + user.getAccount() + " :" + "\n";
             preStr = preStr + "this is the code to use login, but it's only have ten min valid" + "\n";

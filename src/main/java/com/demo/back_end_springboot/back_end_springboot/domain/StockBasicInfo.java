@@ -5,25 +5,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class StockBasicInfo implements Serializable {
-    @JsonProperty(value="status")
+    @JsonProperty(value = "status")
     private String status;
 
-    @JsonProperty(value="date")
+    @JsonProperty(value = "date")
     private String date;
 
-    @JsonProperty(value="title")
+    @JsonProperty(value = "title")
     private String title;
 
-    @JsonProperty(value="fields")
+    @JsonProperty(value = "fields")
     private String[] fields;
 
-    @JsonProperty(value="data")
+    @JsonProperty(value = "data")
     private String[][] data;
 
-    @JsonProperty(value="notes")
+    @JsonProperty(value = "notes")
     private String[] notes;
 
-    public StockBasicInfo() {}
+    public StockBasicInfo() {
+    }
 
     public StockBasicInfo(String status, String date, String title, String[] fields, String[][] data, String[] notes) {
         this.status = status;

@@ -1,17 +1,15 @@
 package com.demo.back_end_springboot.back_end_springboot.domain;
 
-import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class Auth implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public Auth(User user) {
         this.user = user;

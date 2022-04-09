@@ -9,7 +9,7 @@ public class HistoryAssetsForm implements Serializable {
     private String startDate;
     private String endDate;
 
-    private DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    private final DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     public HistoryAssetsForm() {
     }

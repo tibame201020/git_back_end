@@ -9,9 +9,14 @@ import java.util.Map;
 
 public interface TwseStockApi {
     StockJson[] getCodeNmList(String key);
+
     CompanyInfo[] getCompanyInfo(String key);
-    Map<String,Object> getBasicInfo(CodeParam codeParam);
+
+    Map<String, Object> getBasicInfo(CodeParam codeParam);
+
     boolean checkStockCodeNm(String key);
+
     News[] getNews();
+
     String getPriceByCode(String key);
 }

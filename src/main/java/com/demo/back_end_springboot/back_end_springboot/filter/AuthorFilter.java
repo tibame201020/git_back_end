@@ -1,10 +1,8 @@
 package com.demo.back_end_springboot.back_end_springboot.filter;
 
 import com.demo.back_end_springboot.back_end_springboot.domain.Auth;
-import com.demo.back_end_springboot.back_end_springboot.domain.User;
 import com.demo.back_end_springboot.back_end_springboot.util.JwtProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,35 +22,35 @@ import static com.demo.back_end_springboot.back_end_springboot.constant.Security
 import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.USER_LOGIN_NOT_ENABLED;
 
 public class AuthorFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
-    private JwtProvider jwtProvider;
+    private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
 
-    public AuthorFilter (AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
+    public AuthorFilter(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-       String account = null;
-       String pwd = null;
+        String account = null;
+        String pwd = null;
 
-       if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
-           try {
-               Map<String, String> map = new ObjectMapper().readValue(request.getInputStream(), Map.class);
-               account = map.get("account");
-               pwd = map.get("pwd");
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-       } else {
-           account = request.getParameter("username");
-           pwd = request.getParameter("password");
-       }
+        if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
+            try {
+                Map<String, String> map = new ObjectMapper().readValue(request.getInputStream(), Map.class);
+                account = map.get("account");
+                pwd = map.get("pwd");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            account = request.getParameter("username");
+            pwd = request.getParameter("password");
+        }
 
-       UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account, pwd);
-       return authenticationManager.authenticate(authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account, pwd);
+        return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
@@ -61,7 +59,7 @@ public class AuthorFilter extends UsernamePasswordAuthenticationFilter {
         //generate json web token here
         Auth auth = (Auth) authResult.getPrincipal();
 
-        String access_token = jwtProvider.getToken(auth,  1000 * 60 * 60 * 12, request.getRequestURL().toString());
+        String access_token = jwtProvider.getToken(auth, 1000 * 60 * 60 * 12, request.getRequestURL().toString());
         String refresh_token = jwtProvider.getToken(auth, 1000 * 60 * 60 * 24, request.getRequestURL().toString());
 
         Map<String, Object> tokens = new HashMap<>();

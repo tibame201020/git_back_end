@@ -4,9 +4,9 @@ import org.apache.commons.math3.random.RandomDataGenerator;
 
 public class Encoder {
 
-    private static String CHARS_SOURCE = "qwq{Pd]qws!wqd[qw1213!qw132dqw35A44sq211p[2k@12{]as{ll21{}a1$#@";
-    private static char[] CHARS_SOURCE_ARRAY = CHARS_SOURCE.toCharArray();
-    private static RandomDataGenerator randomDataGenerator = new RandomDataGenerator();
+    private static final String CHARS_SOURCE = "qwq{Pd]qws!wqd[qw1213!qw132dqw35A44sq211p[2k@12{]as{ll21{}a1$#@";
+    private static final char[] CHARS_SOURCE_ARRAY = CHARS_SOURCE.toCharArray();
+    private static final RandomDataGenerator randomDataGenerator = new RandomDataGenerator();
 
     public static String encode(String str, String key) {
         char[] chars = str.toCharArray();

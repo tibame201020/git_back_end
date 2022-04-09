@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @RequestMapping("/updatePwd")
-    public ResponseEntity<User> updatePwd (@RequestBody User user) {
+    public ResponseEntity<User> updatePwd(@RequestBody User user) {
         if (StringUtils.isBlank(user.getAccount()) || StringUtils.isBlank(user.getPwd()) || StringUtils.isBlank(user.getPwd())) {
             user.setMessage("必填資訊不得為空");
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -76,7 +76,7 @@ public class UserController {
 
     // 有重複帳號回傳true
     @RequestMapping("/register/isAlreadyHaveAccount")
-    public ResponseEntity<Boolean> isAlreadyHaveAccount (@RequestBody String account) {
+    public ResponseEntity<Boolean> isAlreadyHaveAccount(@RequestBody String account) {
         if (StringUtils.isBlank(account)) {
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
@@ -86,7 +86,7 @@ public class UserController {
 
     // 有重複mail回傳true
     @RequestMapping("/register/isAlreadyHaveMail")
-    public ResponseEntity<Boolean> isAlreadyHaveMail (@RequestBody String mail) {
+    public ResponseEntity<Boolean> isAlreadyHaveMail(@RequestBody String mail) {
         if (StringUtils.isBlank(mail)) {
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
@@ -96,7 +96,7 @@ public class UserController {
 
     // 有重複phone回傳true
     @RequestMapping("/register/isAlreadyHavePhone")
-    public ResponseEntity<Boolean> isAlreadyHavePhone (@RequestBody String phone) {
+    public ResponseEntity<Boolean> isAlreadyHavePhone(@RequestBody String phone) {
         if (!StringUtils.isNumericSpace(phone)) {
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @RequestMapping("/refresh_token")
-    public void refreshToken (HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String refresh_token = authorizationHeader.substring("Bearer ".length());
@@ -134,7 +134,7 @@ public class UserController {
     }
 
     @RequestMapping("/enableTheAccount")
-    public ResponseEntity<User> enableTheAccount (@RequestBody String token) {
+    public ResponseEntity<User> enableTheAccount(@RequestBody String token) {
         User user = new User();
         Jwt jwt = jwtProvider.validToken(token);
         if (jwt.isExpire()) {
@@ -148,8 +148,8 @@ public class UserController {
     }
 
     @RequestMapping("/checkResetToken")
-    public Map<String,Object> checkResetToken (@RequestBody String token) {
-        Map<String,Object> rtnMap = new HashMap<>();
+    public Map<String, Object> checkResetToken(@RequestBody String token) {
+        Map<String, Object> rtnMap = new HashMap<>();
         Jwt jwt = jwtProvider.validToken(token);
         String account = jwt.getIssue();
         if (jwt.isExpire() && userService.checkResetToken(account, token)) {
@@ -162,8 +162,8 @@ public class UserController {
     }
 
     @RequestMapping("/reset_password_confirm")
-    public Map<String,Object> resetPwdConfirm(@RequestBody User user) {
-        Map<String,Object> rtnMap = userService.checkAccountAndMail(user);
+    public Map<String, Object> resetPwdConfirm(@RequestBody User user) {
+        Map<String, Object> rtnMap = userService.checkAccountAndMail(user);
         boolean flag = false;
         if (rtnMap.get("checkResult") instanceof Boolean) {
             flag = (boolean) rtnMap.get("checkResult");
@@ -189,7 +189,7 @@ public class UserController {
     }
 
     @RequestMapping("/loginByShortCode")
-    public Map<String, Object> loginByShortCode (@RequestBody OnceToken onceToken) {
+    public Map<String, Object> loginByShortCode(@RequestBody OnceToken onceToken) {
         onceToken.getAccount();
         onceToken.getShortRandom();
         Map<String, Object> rtnMap = authService.checkShortCode(onceToken);
@@ -199,7 +199,7 @@ public class UserController {
     @RequestMapping("/testMock")
     public Map<String, String> testmock() {
         Map<String, String> map = new HashMap<>();
-        map.put("rtn","success");
+        map.put("rtn", "success");
         return map;
     }
 }

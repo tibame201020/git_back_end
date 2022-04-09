@@ -12,11 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,7 +23,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OnceTokenRepo onceTokenRepo;
 
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserServiceImpl() {
         this.passwordEncoder = new BCryptPasswordEncoder();
@@ -98,31 +94,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isAlreadyHaveAccount(String account) {
         Optional<User> optional = userRepo.findById(account);
-        if (optional.isPresent()) {
-            return true;
-        } else {
-            return false;
-        }
+        return optional.isPresent();
     }
 
     @Override
     public boolean isAlreadyHaveMail(String mail) {
         Optional<User> optional = userRepo.findFirstByMail(mail);
-        if (optional.isPresent()) {
-            return true;
-        } else {
-            return false;
-        }
+        return optional.isPresent();
     }
 
     @Override
     public boolean isAlreadyHavePhone(String phone) {
         Optional<User> optional = userRepo.findFirstByPhone(phone);
-        if (optional.isPresent()) {
-            return true;
-        } else {
-            return false;
-        }
+        return optional.isPresent();
     }
 
     @Override
@@ -165,11 +149,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> rtnMap = new HashMap<>();
         boolean checkResult;
         User userGetByAccount = getUser(user.getAccount());
-        if (user.getMail().equals(userGetByAccount.getMail())) {
-            checkResult = true;
-        } else {
-            checkResult = false;
-        }
+        checkResult = user.getMail().equals(userGetByAccount.getMail());
         rtnMap.put("checkResult", checkResult);
         rtnMap.put("user_info", user);
         return rtnMap;

@@ -9,6 +9,7 @@ import java.net.Proxy;
 public class RestTemplateWithProxy {
     static RestTemplate REST_TEMPLATE = new RestTemplate();
     static SimpleClientHttpRequestFactory FACTORY = new SimpleClientHttpRequestFactory();
+
     static {
         FACTORY.setConnectTimeout(15000);
         FACTORY.setReadTimeout(5000);
@@ -24,6 +25,6 @@ public class RestTemplateWithProxy {
         String proxyIp = "";
         int port = 0;
 
-        return new Proxy(Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1", 8090));
+        return new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8090));
     }
 }

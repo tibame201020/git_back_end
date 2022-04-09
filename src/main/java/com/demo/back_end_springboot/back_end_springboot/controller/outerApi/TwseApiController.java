@@ -26,7 +26,7 @@ public class TwseApiController {
     }
 
     @RequestMapping("/getBasicInfo")
-    public ResponseEntity<Map<String,Object>> getBasicInfo(@RequestBody CodeParam codeParam) {
+    public ResponseEntity<Map<String, Object>> getBasicInfo(@RequestBody CodeParam codeParam) {
         return new ResponseEntity<>(twseStockApi.getBasicInfo(codeParam), HttpStatus.OK);
     }
 
@@ -36,7 +36,7 @@ public class TwseApiController {
     }
 
     @RequestMapping("/checkCodeNm")
-    public ResponseEntity<Boolean> checkCodeNm (@RequestBody String codeNm) {
+    public ResponseEntity<Boolean> checkCodeNm(@RequestBody String codeNm) {
         return new ResponseEntity<>(!twseStockApi.checkStockCodeNm(codeNm.trim()), HttpStatus.OK);
     }
 

@@ -5,13 +5,13 @@ import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
 
-    public static String getToday () {
+    public static String getToday() {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         return localDate.format(formatter);
     }
 
-    public static String getThisMonth () {
+    public static String getThisMonth() {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM");
         return localDate.format(formatter);

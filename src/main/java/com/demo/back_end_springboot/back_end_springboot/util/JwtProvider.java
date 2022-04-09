@@ -16,16 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.SECRET;
-import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.TOKEN_CAN_NOT_VERIFY;
-import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.VALID_SUCCESSFUL_MSG;
-import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.VALID_UNSUCCESSFUL_EXPIRED_MSG;
-import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.VALID_UNSUCCESSFUL_UN_VALID_MSG;
+import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.*;
 
 @Service
 public class JwtProvider {
-    private Algorithm algorithm;
-    private JWTVerifier verifier;
+    private final Algorithm algorithm;
+    private final JWTVerifier verifier;
 
     public JwtProvider() {
         this.algorithm = Algorithm.HMAC512(SECRET.getBytes());
@@ -42,7 +38,7 @@ public class JwtProvider {
         return token;
     }
 
-    public Jwt validToken (String token) {
+    public Jwt validToken(String token) {
         Jwt jwt = new Jwt();
         try {
             DecodedJWT decodedJWT = verifier.verify(token);
