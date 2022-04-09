@@ -5,24 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class CompanyInfo implements Serializable {
-    @JsonProperty(value="上市日期")
+    @JsonProperty(value = "上市日期")
     private String publishDate;
-    @JsonProperty(value="公司代號")
+    @JsonProperty(value = "公司代號")
     private String code;
-    @JsonProperty(value="公司名稱")
+    @JsonProperty(value = "公司名稱")
     private String name;
-    @JsonProperty(value="總經理")
+    @JsonProperty(value = "總經理")
     private String manager;
-    @JsonProperty(value="董事長")
+    @JsonProperty(value = "董事長")
     private String chairman;
-    @JsonProperty(value="住址")
+    @JsonProperty(value = "住址")
     private String address;
-    @JsonProperty(value="實收資本額")
+    @JsonProperty(value = "實收資本額")
     private String paidInCapital;
-    @JsonProperty(value="網址")
+    @JsonProperty(value = "網址")
     private String url;
 
-    public CompanyInfo() {}
+    public CompanyInfo() {
+    }
 
     public CompanyInfo(String publishDate, String code, String name, String manager, String chairman, String address, String paidInCapital, String url) {
         this.publishDate = publishDate;

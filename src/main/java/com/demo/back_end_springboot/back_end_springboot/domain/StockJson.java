@@ -11,35 +11,35 @@ import java.io.Serializable;
 public class StockJson implements Serializable {
 
     @Id
-    @JsonProperty(value="Code")
+    @JsonProperty(value = "Code")
     private String code;
 
-    @JsonProperty(value="Name")
+    @JsonProperty(value = "Name")
     private String name;
 
-    @JsonProperty(value="TradeVolume")
+    @JsonProperty(value = "TradeVolume")
     private String tradevolume;
 
-    @JsonProperty(value="TradeValue")
+    @JsonProperty(value = "TradeValue")
     private String tradevalue;
 
-    @JsonProperty(value="OpeningPrice")
+    @JsonProperty(value = "OpeningPrice")
     private String openingprice;
 
-    @JsonProperty(value="HighestPrice")
+    @JsonProperty(value = "HighestPrice")
     private String highestprice;
 
-    @JsonProperty(value="LowestPrice")
+    @JsonProperty(value = "LowestPrice")
     private String lowestprice;
 
-    @JsonProperty(value="ClosingPrice")
+    @JsonProperty(value = "ClosingPrice")
     private String closingprice;
 
-    @Column(name="change2")
-    @JsonProperty(value="Change")
+    @Column(name = "change2")
+    @JsonProperty(value = "Change")
     private String change;
-    @Column(name="transaction2")
-    @JsonProperty(value="Transaction")
+    @Column(name = "transaction2")
+    @JsonProperty(value = "Transaction")
     private String transaction;
 
     public StockJson() {
@@ -47,7 +47,7 @@ public class StockJson implements Serializable {
     }
 
     public StockJson(String code, String name, String tradevolume, String tradevalue, String openingprice,
-                                   String highestprice, String lowestprice, String closingprice, String change, String transaction) {
+                     String highestprice, String lowestprice, String closingprice, String change, String transaction) {
         super();
         this.code = code;
         this.name = name;

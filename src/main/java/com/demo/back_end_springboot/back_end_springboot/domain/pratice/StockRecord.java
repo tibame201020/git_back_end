@@ -3,11 +3,7 @@ package com.demo.back_end_springboot.back_end_springboot.domain.pratice;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -23,7 +19,7 @@ public class StockRecord implements Serializable {
     private BigDecimal unitPrice;
     private BigDecimal beforeCash;
     private BigDecimal remainCash;
-    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     @Generated(GenerationTime.INSERT)
     private Timestamp recordTime;
 
@@ -31,6 +27,7 @@ public class StockRecord implements Serializable {
     }
 
     public StockRecord(String account, String stockCode, BigDecimal volume, BigDecimal unitPrice, BigDecimal beforeCash, BigDecimal remainCash) {
+        this.id = null;
         this.account = account;
         this.stockCode = stockCode;
         this.volume = volume;

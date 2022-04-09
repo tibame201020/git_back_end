@@ -16,15 +16,16 @@ public class StockData implements Serializable {
     private String highestPrice;
     private String lowestPrice;
     private String closingPrice;
-    @Column(name="change2")
+    @Column(name = "change2")
     private String change;
-    @Column(name="transaction2")
+    @Column(name = "transaction2")
     private String transaction;
     private String yearMonthCode;
     private String yearMonthDate;
     private String codeOut;
 
-    public StockData() {}
+    public StockData() {
+    }
 
 
     public StockDataPk getStockDataPk() {
@@ -128,7 +129,9 @@ public class StockData implements Serializable {
         private String code;
         private String date;
 
-        public StockDataPk() {}
+        public StockDataPk() {
+        }
+
         public StockDataPk(String code, String date) {
             this.code = code;
             this.date = date;

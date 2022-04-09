@@ -82,7 +82,7 @@ public class PracticeServiceImpl implements PracticeService {
             return rtnMap;
         }
         if (record.getStockVolumes() == null) {
-            record.setStockVolumes(new StockVolume[] {});
+            record.setStockVolumes(new StockVolume[]{});
         }
         StockVolume[] stockVolumes = record.getStockVolumes();
         stockVolumes = plusStockVolume(stockVolumes, practiceForm);
@@ -107,7 +107,15 @@ public class PracticeServiceImpl implements PracticeService {
         String account = practiceForm.getAccount();
         String stockCode = practiceForm.getCode();
         BigDecimal unitPrice = new BigDecimal(twseStockApi.getPriceByCode(stockCode));
-        StockRecord stockRecord = new StockRecord(account, stockCode, volume, unitPrice, beforeCash, remainCash);
+
+        StockRecord stockRecord = new StockRecord();
+        stockRecord.setAccount(account);
+        stockRecord.setStockCode(stockCode);
+        stockRecord.setVolume(volume);
+        stockRecord.setUnitPrice(unitPrice);
+        stockRecord.setBeforeCash(beforeCash);
+        stockRecord.setRemainCash(remainCash);
+
         stockRecordRepo.save(stockRecord);
     }
 
@@ -133,12 +141,12 @@ public class PracticeServiceImpl implements PracticeService {
         Record record = records.get(records.size() - 1);
 
         if (record.getStockVolumes() == null) {
-            record.setStockVolumes(new StockVolume[] {});
+            record.setStockVolumes(new StockVolume[]{});
         }
         StockVolume[] stockVolumes = record.getStockVolumes();
 
         if (checkStockVolumesHasCode(stockVolumes, practiceForm.getCode())) {
-            for (StockVolume stockVolume :stockVolumes) {
+            for (StockVolume stockVolume : stockVolumes) {
                 if (stockVolume.getCode().equals(practiceForm.getCode())) {
                     BigDecimal ownerVolume = stockVolume.getVolume();
                     BigDecimal wantToSellVolume = new BigDecimal(practiceForm.getVolume());
@@ -269,13 +277,13 @@ public class PracticeServiceImpl implements PracticeService {
         }).map(Record::getAccountOutline).collect(Collectors.toList());
     }
 
-    private StockVolume[] plusStockVolume (StockVolume[] stockVolumes, PracticeForm practiceForm) {
+    private StockVolume[] plusStockVolume(StockVolume[] stockVolumes, PracticeForm practiceForm) {
         String code = practiceForm.getCode();
         BigDecimal volume = new BigDecimal(practiceForm.getVolume());
         List<StockVolume> stockVolumeList = new ArrayList<>();
         if (stockVolumes.length > 0) {
-            for (StockVolume stockVolume:
-                 stockVolumes) {
+            for (StockVolume stockVolume :
+                    stockVolumes) {
                 stockVolumeList.add(stockVolume);
             }
         }
@@ -291,7 +299,7 @@ public class PracticeServiceImpl implements PracticeService {
         return stockVolumeList.toArray(new StockVolume[stockVolumeList.size()]);
     }
 
-    private StockVolume[] reduceStockVolume (StockVolume[] stockVolumes, PracticeForm practiceForm) {
+    private StockVolume[] reduceStockVolume(StockVolume[] stockVolumes, PracticeForm practiceForm) {
         String code = practiceForm.getCode();
         List<StockVolume> stockVolumeList = new ArrayList<>();
         BigDecimal volume = new BigDecimal(practiceForm.getVolume());
@@ -311,8 +319,8 @@ public class PracticeServiceImpl implements PracticeService {
 
 
     private boolean checkStockVolumesHasCode(StockVolume[] stockVolumes, String code) {
-        for (StockVolume stockVolume:
-             stockVolumes) {
+        for (StockVolume stockVolume :
+                stockVolumes) {
             if (stockVolume.getCode().equals(code)) {
                 return true;
             }
@@ -337,7 +345,7 @@ public class PracticeServiceImpl implements PracticeService {
             }
             //where date decide what price
             if (DateUtil.getToday().equals(date)) {
-                for (StockVolume stockVolume :stockVolumes) {
+                for (StockVolume stockVolume : stockVolumes) {
                     BigDecimal price = new BigDecimal(twseStockApi.getPriceByCode(stockVolume.getCode()));
                     rtnMap.put(stockVolume.getCode(), price);
                 }

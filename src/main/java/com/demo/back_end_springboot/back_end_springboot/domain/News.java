@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class News implements Serializable {
-    @JsonProperty(value="Date")
+    @JsonProperty(value = "Date")
     private String date;
-    @JsonProperty(value="Title")
+    @JsonProperty(value = "Title")
     private String title;
-    @JsonProperty(value="Url")
+    @JsonProperty(value = "Url")
     private String url;
 
     public News() {

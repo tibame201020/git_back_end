@@ -17,7 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.*;
+import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.LOGIN_URL;
+import static com.demo.back_end_springboot.back_end_springboot.constant.SecurityConstant.PASS_URLS;
 
 @Configuration
 @EnableWebSecurity
@@ -31,14 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         AuthorFilter authorFilter = new AuthorFilter(authenticationManagerBean(), new JwtProvider());
         authorFilter.setFilterProcessesUrl(LOGIN_URL);
 
-       http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-       http.authorizeRequests().antMatchers(PASS_URLS)
-               .permitAll();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers(PASS_URLS)
+                .permitAll();
 
-       http.authorizeRequests().antMatchers("/api/user/testMock").hasAuthority("Seller");
-       http.authorizeRequests().anyRequest().authenticated();
-       http.addFilter(authorFilter);
-       http.addFilterBefore(new CustomAuthorizaionFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests().antMatchers("/api/user/testMock").hasAuthority("Seller");
+        http.authorizeRequests().anyRequest().authenticated();
+        http.addFilter(authorFilter);
+        http.addFilterBefore(new CustomAuthorizaionFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.cors().and().csrf().disable();
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
