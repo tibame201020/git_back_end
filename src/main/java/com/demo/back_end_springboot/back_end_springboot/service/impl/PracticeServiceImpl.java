@@ -236,9 +236,10 @@ public class PracticeServiceImpl implements PracticeService {
     @Override
     public void changeRecordVisibility(String account, String visibility) {
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(account);
-        Record record = records.get(records.size() - 1);
-        record.setVisibility(visibility);
-        recordRepo.save(record);
+        for (Record record : records) {
+            record.setVisibility(visibility);
+        }
+        recordRepo.saveAll(records);
     }
 
     @Override
@@ -282,7 +283,7 @@ public class PracticeServiceImpl implements PracticeService {
     private List<Record> getRecordsByAccounts(Set<String> visibilityIsAllAccounts) {
         List<Record> records = new ArrayList<>();
         visibilityIsAllAccounts.forEach(str -> {
-            List<Record> recordLs = recordRepo.findByAccountOutlineOrderByRecordPk(str);
+            List<Record> recordLs = recordRepo.findByAccountOutlineAndVisibilityOrderByRecordPk(str, "all");
             records.add(recordLs.get(recordLs.size() - 1));
         });
 
