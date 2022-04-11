@@ -397,7 +397,7 @@ public class PracticeServiceImpl implements PracticeService {
             return recordOptional.get();
         } else {
             Record record = null;
-            List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(account);
+            List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPkDesc(account);
             for (Record rec : records) {
                 Integer recordDate = new Integer(rec.getRecordPk().getDate().replace("/", ""));
                 Integer findDate = new Integer(date.replace("/", ""));
