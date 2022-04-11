@@ -73,7 +73,8 @@ public class PracticeServiceImpl implements PracticeService {
     public Map<String, Object> buyStock(PracticeForm practiceForm) {
         Map<String, Object> rtnMap = new HashMap<>();
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(practiceForm.getAccount());
-        Record record = records.get(records.size() - 1);
+        Record dbRecord = records.get(records.size() - 1);
+        Record record = getSaveRecord(dbRecord);
         BigDecimal beforeCash = record.getCash();
 
         if (!checkRemainCashCanAfford(record, practiceForm)) {
@@ -87,7 +88,7 @@ public class PracticeServiceImpl implements PracticeService {
         StockVolume[] stockVolumes = record.getStockVolumes();
         stockVolumes = plusStockVolume(stockVolumes, practiceForm);
         record.setStockVolumes(stockVolumes);
-        Record recordtoSave = getSaveRecord(record);
+
 
         Map<String, BigDecimal> assets = calcTotalAssets(record.getRecordPk().getAccount(), record.getRecordPk().getDate());
         BigDecimal volume = new BigDecimal(practiceForm.getVolume());
@@ -95,10 +96,9 @@ public class PracticeServiceImpl implements PracticeService {
         saveStockRecord(practiceForm, volume, beforeCash, remainCash);
 
 
-
-        recordRepo.save(recordtoSave);
+        recordRepo.save(record);
         rtnMap.put("status", true);
-        rtnMap.put("result", recordtoSave);
+        rtnMap.put("result", record);
         rtnMap.put("assest", assets);
 
         return rtnMap;
@@ -140,7 +140,8 @@ public class PracticeServiceImpl implements PracticeService {
     public Map<String, Object> sellStock(PracticeForm practiceForm) {
         Map<String, Object> rtnMap = new HashMap<>();
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(practiceForm.getAccount());
-        Record record = records.get(records.size() - 1);
+        Record dbRecord = records.get(records.size() - 1);
+        Record record = getSaveRecord(dbRecord);
 
         if (record.getStockVolumes() == null) {
             record.setStockVolumes(new StockVolume[]{});
@@ -162,14 +163,12 @@ public class PracticeServiceImpl implements PracticeService {
                         BigDecimal remainCash = record.getCash();
                         record.setCash(remainCash.add(price.multiply(volume)));
 
-                        Record recordtoSave = getSaveRecord(record);
-
-                        recordRepo.save(recordtoSave);
+                        recordRepo.save(record);
                         Map<String, BigDecimal> assets = calcTotalAssets(record.getRecordPk().getAccount(), record.getRecordPk().getDate());
                         saveStockRecord(practiceForm, volume.negate(), beforeCash, record.getCash());
 
                         rtnMap.put("status", true);
-                        rtnMap.put("result", recordtoSave);
+                        rtnMap.put("result", record);
                         rtnMap.put("assest", assets);
                         return rtnMap;
                     } else {
@@ -201,6 +200,7 @@ public class PracticeServiceImpl implements PracticeService {
         rtnRecord.setStockVolumes(record.getStockVolumes());
         rtnRecord.setTotal(record.getTotal());
         rtnRecord.setAccountOutline(record.getAccountOutline());
+
         return rtnRecord;
     }
 
