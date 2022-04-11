@@ -74,8 +74,9 @@ public class PracticeServiceImpl implements PracticeService {
         Map<String, Object> rtnMap = new HashMap<>();
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(practiceForm.getAccount());
         Record dbRecord = records.get(records.size() - 1);
-        Record record = getSaveRecord(dbRecord);
-        recordRepo.save(record);
+        Record saveRecord = getSaveRecord(dbRecord);
+        recordRepo.save(saveRecord);
+        Record record = recordRepo.getById(new RecordPk(practiceForm.getAccount(), DateUtil.getToday()));
         BigDecimal beforeCash = record.getCash();
 
         if (!checkRemainCashCanAfford(record, practiceForm)) {
@@ -142,8 +143,9 @@ public class PracticeServiceImpl implements PracticeService {
         Map<String, Object> rtnMap = new HashMap<>();
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(practiceForm.getAccount());
         Record dbRecord = records.get(records.size() - 1);
-        Record record = getSaveRecord(dbRecord);
-        recordRepo.save(record);
+        Record saveRecord = getSaveRecord(dbRecord);
+        recordRepo.save(saveRecord);
+        Record record = recordRepo.getById(new RecordPk(practiceForm.getAccount(), DateUtil.getToday()));
 
         if (record.getStockVolumes() == null) {
             record.setStockVolumes(new StockVolume[]{});
