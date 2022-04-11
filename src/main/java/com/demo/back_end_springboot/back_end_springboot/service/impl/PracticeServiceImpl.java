@@ -75,6 +75,7 @@ public class PracticeServiceImpl implements PracticeService {
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(practiceForm.getAccount());
         Record dbRecord = records.get(records.size() - 1);
         Record record = getSaveRecord(dbRecord);
+        recordRepo.save(record);
         BigDecimal beforeCash = record.getCash();
 
         if (!checkRemainCashCanAfford(record, practiceForm)) {
@@ -142,6 +143,7 @@ public class PracticeServiceImpl implements PracticeService {
         List<Record> records = recordRepo.findByAccountOutlineOrderByRecordPk(practiceForm.getAccount());
         Record dbRecord = records.get(records.size() - 1);
         Record record = getSaveRecord(dbRecord);
+        recordRepo.save(record);
 
         if (record.getStockVolumes() == null) {
             record.setStockVolumes(new StockVolume[]{});
